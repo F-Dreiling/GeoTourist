@@ -15,7 +15,8 @@ class MapController {
         $locations = $model->all();
 
         $viewData = [
-            'locations' => $locations
+            'locations' => $locations,
+            'maps_api_key' => $this->config['maps_api_key']
         ];
 
         require __DIR__ . '/../views/map.php';

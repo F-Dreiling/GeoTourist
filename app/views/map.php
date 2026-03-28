@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Geo Map</title>
-    <style>
-        #map {
-            height: 100vh;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
+<?php require __DIR__ . '/layout/header.php'; ?>
+
+<!--<pre><?php //print_r($viewData['locations']); ?></pre>-->
 
 <div id="map"></div>
 
@@ -17,17 +8,17 @@
     const locations = <?php echo json_encode($viewData['locations']); ?>;
 
     function initMap() {
-        const center = { lat: 48.8584, lng: 2.2945 };
-
         const map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 4,
-            center: center,
+            center: { lat: 49.76, lng: 6.64 },
+            mapTypeId: 'hybrid',
+            tilt: 45,
+            zoom: 10,
         });
 
         locations.forEach(loc => {
-            if (!loc.geo) return;
+            if (!loc.geoPoint) return;
 
-            const coords = loc.geo.coordinates;
+            const coords = loc.geoPoint.coordinates;
 
             const marker = new google.maps.Marker({
                 position: {
@@ -49,10 +40,8 @@
     }
 </script>
 
-<!-- ⚠️ Replace YOUR_API_KEY -->
 <script async
-    src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=<?php echo $viewData['maps_api_key']; ?>&callback=initMap&loading=async">
 </script>
 
-</body>
-</html>
+<?php require __DIR__ . '/layout/footer.php'; ?>

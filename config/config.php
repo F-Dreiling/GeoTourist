@@ -6,6 +6,7 @@ return [
         'base_path' => '/geotourist',
     ],
     'backend_url' => 'http://localhost:8080/locations',
+    'maps_api_key' => 'AIzaSyBGHN9oNtiustzEwq2Y7QBOKyKaAwKMhgY'
 ];
 
 ?>
