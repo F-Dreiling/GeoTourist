@@ -2,6 +2,33 @@
 
 <!--<pre><?php //print_r($viewData['locations']); ?></pre>-->
 
+<div id="map-controls">
+
+    <form method="GET" action="/search" class="d-flex mb-2">
+        <input type="text" name="name" class="form-control me-2" placeholder="Search location..." value="<?= htmlspecialchars( $_GET['name'] ?? '' ) ?>">
+        <button class="btn btn-primary">Search</button>
+    </form>
+
+    <form method="GET" action="/near" class="row g-2">
+        <div class="col-3">
+            <input type="number" step="any" name="lon" id="lon" class="form-control" placeholder="Lon" value="<?= htmlspecialchars( $_GET['lon'] ?? '' ) ?>">
+        </div>
+
+        <div class="col-3">
+            <input type="number" step="any" name="lat" id="lat" class="form-control" placeholder="Lat" value="<?= htmlspecialchars( $_GET['lat'] ?? '' ) ?>">
+        </div>
+
+        <div class="col-3">
+            <input type="number" step="any" name="km" class="form-control" placeholder="km" value="<?= htmlspecialchars( $_GET['km'] ?? '' ) ?>">
+        </div>
+
+        <div class="col-3">
+            <button class="btn btn-success w-100">Find Nearby</button>
+        </div>
+    </form>
+
+</div>
+
 <div id="map"></div>
 
 <script>
@@ -36,6 +63,11 @@
             marker.addListener("click", () => {
                 info.open(map, marker);
             });
+        });
+
+        map.addListener("click", (e) => {
+            document.getElementById("lat").value = e.latLng.lat().toFixed(6);
+            document.getElementById("lon").value = e.latLng.lng().toFixed(6);
         });
     }
 </script>

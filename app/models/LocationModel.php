@@ -30,8 +30,8 @@ class LocationModel {
         return $this->fetch( $this->backendUrl . "/search?name=" . urlencode( $name ) );
     }
 
-    public function near( float $lon, float $lat ): array {
-        return $this->fetch( $this->backendUrl . "/near?lon=$lon&lat=$lat" );
+    public function near( float $lon, float $lat, float $km = 5 ): array {
+        return $this->fetch( $this->backendUrl . "/near?lon=$lon&lat=$lat&km=$km" );
     }
 
     public function create( array $data ): array {

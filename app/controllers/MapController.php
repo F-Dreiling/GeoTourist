@@ -54,15 +54,20 @@ class MapController {
     }
     
     public function near() {
-        $lat = isset( $_GET['lat'] ) ? (float)$_GET['lat'] : null;
         $lon = isset( $_GET['lon'] ) ? (float)$_GET['lon'] : null;
+        $lat = isset( $_GET['lat'] ) ? (float)$_GET['lat'] : null;
 
-        if ( $lat === null || $lon === null ) {
+        if ( !( $_GET['km'] > 0 ) ) {
+            $_GET['km'] = 5;
+        }
+        $km = (float)$_GET['km'];
+
+        if ( $lon === null || $lat === null ) {
             $this->all();
             return;
         }
 
-        $locations = $this->model->near( $lon, $lat );
+        $locations = $this->model->near( $lon, $lat, $km );
 
         $this->render( $locations );
     }
@@ -74,7 +79,7 @@ class MapController {
             'geoPoint' => [
                 'type' => 'Point',
                 'coordinates' => [
-                    (float)$_POST['log'],
+                    (float)$_POST['lon'],
                     (float)$_POST['lat']
                 ]
             ]

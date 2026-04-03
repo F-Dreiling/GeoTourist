@@ -1,6 +1,5 @@
 <?php
 
-// Enable error reporting for debugging
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -15,7 +14,7 @@ $uri = trim( $uri, '/' );
 
 $controller = new MapController( $config );
 
-switch ($uri) {
+switch ( $uri ) {
     case '':
         $controller->all();
         break;
@@ -29,11 +28,11 @@ switch ($uri) {
         break;
 
     default:
-        if (preg_match('/^[a-f0-9]{24}$/i', $uri)) {
+        if ( preg_match( '/^[a-f0-9]{24}$/i', $uri ) ) {
             $_GET['id'] = $uri;
             $controller->one();
         } else {
-            http_response_code(404);
+            http_response_code( 404 );
             echo "Not found";
         }
 }
