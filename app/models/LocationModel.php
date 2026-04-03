@@ -4,22 +4,53 @@ class LocationModel {
 
     private string $backendUrl;
 
-    public function __construct(string $backendUrl) {
+    public function __construct( string $backendUrl ) {
         $this->backendUrl = $backendUrl;
     }
 
-    public function all(): array {
-        $json = @file_get_contents($this->backendUrl);
+    private function fetch( string $url ): array {
+        $json = @file_get_contents( $url );
 
-        if ($json === false) {
-            return [];
-        }
+        if ( $json === false ) return [];
 
-        $data = json_decode($json, true);
+        $data = json_decode( $json, true );
 
-        return is_array($data) ? $data : [];
+        return is_array( $data ) ? $data : [];
     }
-    
+
+    public function all(): array {
+        return $this->fetch( $this->backendUrl );
+    }
+
+    public function one( string $id ): array {
+        return $this->fetch( $this->backendUrl . "/" . $id );
+    }
+
+    public function search( string $name ): array {
+        return $this->fetch( $this->backendUrl . "/search?name=" . urlencode( $name ) );
+    }
+
+    public function near( float $lon, float $lat ): array {
+        return $this->fetch( $this->backendUrl . "/near?lon=$lon&lat=$lat" );
+    }
+
+    public function create( array $data ): array {
+        $options = [
+            'http' => [
+                'header'  => "Content-type: application/json\r\n",
+                'method'  => 'POST',
+                'content' => json_encode( $data ),
+            ],
+        ];
+
+        $context = stream_context_create( $options );
+
+        $result = file_get_contents( $this->backendUrl, false, $context );
+
+        if ( $result === false ) return [];
+
+        return json_decode( $result, true ) ?? [];
+    }
 }
 
 ?>

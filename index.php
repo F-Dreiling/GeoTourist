@@ -6,11 +6,36 @@ error_reporting(E_ALL);
 
 $config = require_once __DIR__ . '/config/config.php';
 
-define('BASE_PATH', $config['app']['base_path']);
+define( 'BASE_PATH', $config['app']['base_path'] );
 
 require_once __DIR__ . '/app/controllers/MapController.php';
 
-$controller = new MapController($config);
-$controller->index();
+$uri = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+$uri = trim( $uri, '/' );
+
+$controller = new MapController( $config );
+
+switch ($uri) {
+    case '':
+        $controller->all();
+        break;
+
+    case 'search':
+        $controller->search();
+        break;
+
+    case 'near':
+        $controller->near();
+        break;
+
+    default:
+        if (preg_match('/^[a-f0-9]{24}$/i', $uri)) {
+            $_GET['id'] = $uri;
+            $controller->one();
+        } else {
+            http_response_code(404);
+            echo "Not found";
+        }
+}
 
 ?>
