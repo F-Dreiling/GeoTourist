@@ -2,60 +2,94 @@
     const searchParams = window.APP_DATA.search;
 
     const btnSearch = document.getElementById("btn-search");
+    const btnDate = document.getElementById("btn-date");
     const btnNew = document.getElementById("btn-new");
-
     const searchPanel = document.getElementById("search-panel");
+    const datePanel = document.getElementById("date-panel");
     const newPanel = document.getElementById("new-panel");
 
-    btnSearch.addEventListener("click", () => {
+    btnSearch.addEventListener( "click", () => {
         searchPanel.style.top = btnSearch.offsetTop + "px";
         searchPanel.classList.toggle("active");
         newPanel.classList.remove("active");
+        datePanel.classList.remove("active");
     });
 
-    btnNew.addEventListener("click", () => {
+    btnDate.addEventListener( "click", () => {
+        datePanel.style.top = btnDate.offsetTop + "px";
+        datePanel.classList.toggle("active");
+        searchPanel.classList.remove("active");
+        newPanel.classList.remove("active");
+    });
+
+    btnNew.addEventListener( "click", () => {
         newPanel.style.top = btnNew.offsetTop + "px";
         newPanel.classList.toggle("active");
         searchPanel.classList.remove("active");
+        datePanel.classList.remove("active");
     });
 
-    function initMap() {
+    window.initMap = function () {
+        let openInfoWindow = null;
+
         const map = new google.maps.Map(document.getElementById("map"), {
             center: { lat: 49.76, lng: 6.64 },
             mapTypeId: 'hybrid',
+            mapId: '458f84a5d3127d64d19da50c',
             tilt: 45,
             zoom: 10,
+            clickableIcons: false
         });
 
-        locations.forEach(loc => {
-            if (!loc.geoPoint) return;
+        locations.forEach( loc => {
+            if ( !loc.geoPoint ) return;
 
             const coords = loc.geoPoint.coordinates;
 
-            const marker = new google.maps.Marker({
+            const markerContent = document.createElement("div");
+            markerContent.innerHTML = `
+                <div class="marker-pin"></div>
+            `;
+            markerContent.style.cursor = "pointer";
+
+            const marker = new google.maps.marker.AdvancedMarkerElement({
+                map: map,
                 position: {
                     lat: coords[1],
                     lng: coords[0]
                 },
-                map: map,
-                title: loc.name
+                content: markerContent
             });
+
+            const infoContent = document.createElement("div");
+            infoContent.className = "info-window";
+            infoContent.innerHTML = `
+                <div class="info-title">${loc.name}</div>
+                ${loc.address ? `<div>${loc.address}</div>` : ''}
+                ${loc.dateVisited ? `<div>${loc.dateVisited}</div>` : ''}
+            `;
 
             const info = new google.maps.InfoWindow({
-                content: `<strong>${loc.name}</strong><br>${loc.address ?? ''}`
+                shouldFocus: false,
+                content: infoContent
             });
 
-            marker.addListener("click", () => {
+            google.maps.event.addListener(marker, "click", () => {
+                if (openInfoWindow) {
+                    openInfoWindow.close();
+                }
+
                 info.open(map, marker);
+                openInfoWindow = info;
             });
         });
 
-        if (locations.length > 0) {
+        if ( locations.length > 0 ) {
             const bounds = new google.maps.LatLngBounds();
             let count = 0;
 
             locations.forEach(loc => {
-                if (!loc.geoPoint) return;
+                if ( !loc.geoPoint ) return;
 
                 const coords = loc.geoPoint.coordinates;
 
@@ -67,86 +101,70 @@
                 count++;
             });
 
-            if (count === 1) {
+            if ( count === 1 ) {
                 map.setCenter(bounds.getCenter());
                 map.setZoom(Math.min(map.getZoom(), 14));
             } 
-            else if (count > 1) {
+            else if ( count > 1 ) {
                 map.fitBounds(bounds);
             }
         }
 
         let clickMarker = null;
-        let clickCircle = null;
 
-        map.addListener("click", (e) => {
+        map.addListener( "click", (e) => {
+            if (openInfoWindow) { 
+                openInfoWindow.close(); 
+                openInfoWindow = null; 
+            }
+
             const lat = e.latLng.lat();
             const lon = e.latLng.lng();
 
-            // Fill form fields
             document.getElementById("lat").value = lat.toFixed(6);
             document.getElementById("lon").value = lon.toFixed(6);
-
-            // Fill NEW form fields
             document.getElementById("new-lat").value = lat.toFixed(6);
             document.getElementById("new-lon").value = lon.toFixed(6);
 
-            // Close panels
             searchPanel.classList.remove("active");
+            datePanel.classList.remove("active");
             newPanel.classList.remove("active");
 
             const position = { lat: lat, lng: lon };
 
-            // Remove old marker/circle if exists
-            if (clickMarker) clickMarker.setMap(null);
-            if (clickCircle) clickCircle.setMap(null);
+            if ( clickMarker ) clickMarker.setMap(null);
 
-            // 🔴 Small red center marker
-            clickMarker = new google.maps.Marker({
+            clickMarker = new google.maps.marker.AdvancedMarkerElement({
+                map: map,
                 position: position,
-                map: map,
-                title: "Selected location",
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale: 6,
-                    fillColor: "#dc3545", // Bootstrap red
-                    fillOpacity: 1,
-                    strokeWeight: 2,
-                    strokeColor: "#fff"
-                }
-            });
-
-            // 🔴 Small subtle radius (optional, looks nice)
-            clickCircle = new google.maps.Circle({
-                strokeColor: "#dc3545",
-                strokeOpacity: 0.6,
-                strokeWeight: 2,
-                fillColor: "#dc3545",
-                fillOpacity: 0.15,
-                map: map,
-                center: position,
-                radius: 100 // 100 meters, tweak as you like
+                content: (() => {
+                    const el = document.createElement("div");
+                    el.style.width = "15px";
+                    el.style.height = "15px";
+                    el.style.background = "#ffc107";
+                    el.style.border = "2px solid white";
+                    el.style.borderRadius = "50%";
+                    return el;
+                })()
             });
         });
 
-        if (searchParams.lat !== null && searchParams.lon !== null) {
+        if ( searchParams.lat !== null && searchParams.lon !== null ) {
             const center = {
                 lat: searchParams.lat,
                 lng: searchParams.lon
             };
 
-            const radius = (searchParams.km || 5) * 1000; // meters
+            const radius = ( searchParams.km || 5 ) * 1000;
 
-            // Optional: center map on search
             map.setCenter(center);
 
-            // Draw circle
             const circle = new google.maps.Circle({
                 strokeColor: "#0d6efd",
                 strokeOpacity: 0.6,
                 strokeWeight: 2,
                 fillColor: "#0d6efd",
-                fillOpacity: 0.15,
+                fillOpacity: 0.10,
                 map: map,
                 center: center,
                 radius: radius,
@@ -155,19 +173,18 @@
 
             map.fitBounds(circle.getBounds());
 
-            // Optional: marker in center
-            new google.maps.Marker({
-                position: center,
+            new google.maps.marker.AdvancedMarkerElement({
                 map: map,
-                title: "Search Center",
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale: 6,
-                    fillColor: "#0d6efd",
-                    fillOpacity: 1,
-                    strokeWeight: 2,
-                    strokeColor: "#fff"
-                }
+                position: center,
+                content: (() => {
+                    const el = document.createElement("div");
+                    el.style.width = "15px";
+                    el.style.height = "15px";
+                    el.style.background = "#0d6efd";
+                    el.style.border = "2px solid white";
+                    el.style.borderRadius = "50%";
+                    return el;
+                })()
             });
         }
     }

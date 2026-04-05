@@ -7,12 +7,12 @@ class MapController {
     private $config;
     private $model;
 
-    public function __construct($config) {
+    public function __construct( $config ) {
         $this->config = $config;
         $this->model = new LocationModel( $this->config['backend_url'] );
     }
 
-    private function render(array $locations) {
+    private function render( array $locations ) {
         $viewData = [
             'locations' => $locations,
             'maps_api_key' => $this->config['maps_api_key']
@@ -49,6 +49,19 @@ class MapController {
         }
 
         $locations = $this->model->search( $term );
+
+        $this->render( $locations );
+    }
+
+    public function date() {
+        $year = $_GET['year'] ?? null;
+
+        if ( !is_numeric( $year ) ) {
+            $this->all();
+            return;
+        }
+
+        $locations = $this->model->date( $year );
 
         $this->render( $locations );
     }

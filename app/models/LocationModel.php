@@ -30,6 +30,10 @@ class LocationModel {
         return $this->fetch( $this->backendUrl . "/search?term=" . urlencode( $term ) );
     }
 
+    public function date( string $year ): array {
+        return $this->fetch( $this->backendUrl . "/date?year=" . urlencode( $year ) );
+    }
+
     public function near( float $lon, float $lat, float $km = 5 ): array {
         return $this->fetch( $this->backendUrl . "/near?lon=$lon&lat=$lat&km=$km" );
     }

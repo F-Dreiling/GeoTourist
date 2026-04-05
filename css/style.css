@@ -10,7 +10,7 @@ body {
 
 footer {
     height: 4vh;
-    background-color: #343a40;
+    background-color: #212529;
     color: #f8f9fa;
     display: flex;
     align-items: center;
@@ -27,18 +27,15 @@ footer {
     position: absolute;
     top: 14px;
     left: 50%;
-    transform: translateX(-50%);
-    
     width: 90%;
     max-width: 600px;
 
-    background: rgba(33, 37, 41, 0.95);
-    backdrop-filter: blur(8px);
-
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-
     padding: 15px;
     border-radius: 12px;
+    background: rgba(33, 37, 41, 0.95);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+
+    transform: translateX(-50%);
     z-index: 1000;
 }
 
@@ -63,13 +60,11 @@ footer {
     border-radius: 10px;
     color: white;
     background: rgba(33, 37, 41, 0.95);
-
     box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     
     opacity: 0;
     transform: translateX(10px);
     pointer-events: none;
-
     transition: all 0.2s ease;
 }
 
@@ -77,4 +72,54 @@ footer {
     opacity: 1;
     transform: translateX(0);
     pointer-events: auto;
+}
+
+.marker-pin {
+    width: 12px;
+    height: 12px;
+    background: #dc3545;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.info-window {
+    background: rgba(33, 37, 41, 0.95);
+    color: white;
+    padding: 8px 10px;
+    border-radius: 8px;
+    min-width: 100px;
+    
+}
+
+.info-title {
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.gm-style .gm-style-iw-c {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: 10px !important;
+}
+
+.gm-style .gm-style-iw-d {
+    overflow: hidden !important;
+}
+
+.gm-ui-hover-effect {
+    width: 20px !important;
+    height: 20px !important;
+    top: 0 !important;
+    right: 10px !important;
+}
+
+.gm-ui-hover-effect span {
+    width: 12px !important;
+    height: 12px !important;
+}
+
+.gm-ui-hover-effect:focus {
+    outline: none !important;
 }

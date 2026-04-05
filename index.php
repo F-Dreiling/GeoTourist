@@ -23,6 +23,10 @@ switch ( $uri ) {
         $controller->search();
         break;
 
+    case 'date':
+        $controller->date();
+        break;
+
     case 'near':
         $controller->near();
         break;
