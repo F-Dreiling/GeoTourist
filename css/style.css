@@ -41,3 +41,40 @@ footer {
     border-radius: 12px;
     z-index: 1000;
 }
+
+#map-ui {
+    position: absolute;
+    top: 30%;
+    right: 20px;
+    z-index: 10;
+}
+
+#map-buttons {
+    width: 60px;
+}
+
+.map-panel {
+    position: absolute;
+    top: 0;
+    right: 70px;
+    width: 260px;
+
+    padding: 15px;
+    border-radius: 10px;
+    color: white;
+    background: rgba(33, 37, 41, 0.95);
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    
+    opacity: 0;
+    transform: translateX(10px);
+    pointer-events: none;
+
+    transition: all 0.2s ease;
+}
+
+.map-panel.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}

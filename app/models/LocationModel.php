@@ -26,8 +26,8 @@ class LocationModel {
         return $this->fetch( $this->backendUrl . "/" . $id );
     }
 
-    public function search( string $name ): array {
-        return $this->fetch( $this->backendUrl . "/search?name=" . urlencode( $name ) );
+    public function search( string $term ): array {
+        return $this->fetch( $this->backendUrl . "/search?term=" . urlencode( $term ) );
     }
 
     public function near( float $lon, float $lat, float $km = 5 ): array {

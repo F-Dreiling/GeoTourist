@@ -41,14 +41,14 @@ class MapController {
     }
 
     public function search() {
-        $name = $_GET['name'] ?? null;
+        $term = $_GET['term'] ?? null;
 
-        if ( $name === null ) {
+        if ( $term === null ) {
             $this->all();
             return;
         }
-        
-        $locations = $this->model->search( $name );
+
+        $locations = $this->model->search( $term );
 
         $this->render( $locations );
     }
@@ -82,13 +82,14 @@ class MapController {
                     (float)$_POST['lon'],
                     (float)$_POST['lat']
                 ]
-            ]
+            ],
+            'dateVisited' => $_POST['date']
         ];
 
         $this->model->create( $data );
 
-        header( "Location: /" );
-        exit;
+        $_GET['name'] = $_POST['name'];
+        $this->search();
     }
 }
 

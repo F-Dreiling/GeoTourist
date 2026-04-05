@@ -27,6 +27,15 @@ switch ( $uri ) {
         $controller->near();
         break;
 
+    case 'create':
+        if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+            $controller->create();
+        } else {
+            http_response_code( 405 );
+            echo "Method not allowed";
+        }
+        break;
+
     default:
         if ( preg_match( '/^[a-f0-9]{24}$/i', $uri ) ) {
             $_GET['id'] = $uri;
