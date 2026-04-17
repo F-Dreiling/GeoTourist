@@ -19,6 +19,7 @@ $router->get( 'date', fn() => $controller->date() );
 $router->get( 'near', fn() => $controller->near() );
 
 $router->post( 'create', fn() => $controller->create() );
+$router->delete( 'delete/:id', fn() => $controller->delete() );
 
 $uri = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
 $router->dispatch( $uri, $_SERVER['REQUEST_METHOD'] );

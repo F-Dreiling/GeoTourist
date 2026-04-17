@@ -62,7 +62,10 @@
             const infoContent = document.createElement("div");
             infoContent.className = "info-window";
             infoContent.innerHTML = `
-                <div class="info-title">${loc.name}</div>
+                <div class="info-header">
+                    <div class="info-title">${loc.name}</div>
+                    <button class="info-delete" data-id="${loc.id}" title="Delete">⛔</button>
+                </div>
                 ${loc.address ? `<div>${loc.address}</div>` : ''}
                 ${loc.dateVisited ? `<div>${loc.dateVisited}</div>` : ''}
             `;
@@ -79,6 +82,40 @@
 
                 info.open(map, marker);
                 openInfoWindow = info;
+
+                // Delete Button - Wait for DOM render
+                setTimeout(() => {
+                    const btn = document.querySelector(".info-delete[data-id='" + loc.id + "']");
+                    if (!btn) return;
+
+                    btn.addEventListener("click", async (e) => {
+                        e.stopPropagation();
+
+                        if (!confirm("Delete this location?")) return;
+
+                        try {
+                            const res = await fetch(`/delete/${loc.id}`, {
+                                method: "DELETE"
+                            });
+
+                            if (res.ok) {
+                                marker.map = null;
+
+                                if (openInfoWindow) {
+                                    openInfoWindow.close();
+                                    openInfoWindow = null;
+                                }
+                            }
+                            else {
+                                alert("Delete failed");
+                            }
+                        }
+                        catch (err) {
+                            console.error(err);
+                            alert("Error deleting location");
+                        }
+                    });
+                }, 0);
             });
         });
 

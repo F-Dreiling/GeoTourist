@@ -104,6 +104,20 @@ class MapController {
         $_GET['name'] = $_POST['name'];
         $this->search();
     }
+
+    public function delete() {
+        $id = $_GET['id'] ?? null;
+
+        if ( !$id ) {
+            http_response_code(400);
+            echo "Missing ID";
+            return;
+        }
+
+        $this->model->delete( $id );
+
+        echo json_encode( ['status' => 'ok'] );
+    }
 }
 
 ?>

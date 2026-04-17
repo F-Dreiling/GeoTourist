@@ -111,7 +111,27 @@ footer {
 .info-title {
     font-weight: 500;
     font-size: 15px;
+}
+
+.info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 4px;
+}
+
+.info-delete {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #dc3545;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.info-delete:hover {
+    transform: scale(1.2);
 }
 
 .gm-style .gm-style-iw-c {

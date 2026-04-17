@@ -12,16 +12,28 @@ class Router {
         $this->routes['POST'][$path] = $handler;
     }
 
+    public function delete(string $path, callable $handler) {
+        $this->routes['DELETE'][$path] = $handler;
+    }
+
     public function dispatch(string $uri, string $method) {
+        //var_dump($method, $uri);
         $uri = trim($uri, '/');
 
+        // Static Routes
         if (isset($this->routes[$method][$uri])) {
             return call_user_func($this->routes[$method][$uri]);
         }
 
-        if (preg_match('/^[a-f0-9]{24}$/i', $uri)) {
-            $_GET['id'] = $uri;
-            return call_user_func($this->routes[$method][':id']);
+        // Dynamic routes
+        foreach ($this->routes[$method] ?? [] as $route => $handler) {
+            $pattern = preg_replace('#:id#', '([a-f0-9]{24})', $route);
+            $pattern = "#^" . $pattern . "$#i";
+
+            if (preg_match($pattern, $uri, $matches)) {
+                $_GET['id'] = $matches[1];
+                return call_user_func($handler);
+            }
         }
 
         http_response_code(404);

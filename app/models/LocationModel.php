@@ -55,6 +55,20 @@ class LocationModel {
 
         return json_decode( $result, true ) ?? [];
     }
+
+    public function delete( string $id ): bool {
+        $options = [
+            'http' => [
+                'method' => 'DELETE'
+            ]
+        ];
+
+        $context = stream_context_create( $options );
+
+        $result = file_get_contents( $this->backendUrl . '/' . $id, false, $context );
+
+        return $result !== false;
+    }
 }
 
 ?>
