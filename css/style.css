@@ -74,10 +74,27 @@ footer {
     pointer-events: auto;
 }
 
-.marker-pin {
+.marker-location {
     width: 12px;
     height: 12px;
     background: #dc3545;
+    border-radius: 50%;
+    border: 2px solid white;
+    cursor: pointer;
+}
+
+.marker-click {
+    width: 15px;
+    height: 15px;
+    background: #ffc107;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.marker-search {
+    width: 15px;
+    height: 15px;
+    background: #0d6efd;
     border-radius: 50%;
     border: 2px solid white;
 }

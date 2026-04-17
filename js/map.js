@@ -41,16 +41,14 @@
             clickableIcons: false
         });
 
+        // Markers for Locations
         locations.forEach( loc => {
             if ( !loc.geoPoint ) return;
 
             const coords = loc.geoPoint.coordinates;
 
             const markerContent = document.createElement("div");
-            markerContent.innerHTML = `
-                <div class="marker-pin"></div>
-            `;
-            markerContent.style.cursor = "pointer";
+            markerContent.className = "marker-location";
 
             const marker = new google.maps.marker.AdvancedMarkerElement({
                 map: map,
@@ -84,6 +82,7 @@
             });
         });
 
+        // Fit all Markers
         if ( locations.length > 0 ) {
             const bounds = new google.maps.LatLngBounds();
             let count = 0;
@@ -110,6 +109,7 @@
             }
         }
 
+        // Map Click
         let clickMarker = null;
 
         map.addListener( "click", (e) => {
@@ -134,21 +134,17 @@
 
             if ( clickMarker ) clickMarker.setMap(null);
 
+            const markerContent = document.createElement("div");
+            markerContent.className = "marker-click";
+
             clickMarker = new google.maps.marker.AdvancedMarkerElement({
                 map: map,
                 position: position,
-                content: (() => {
-                    const el = document.createElement("div");
-                    el.style.width = "15px";
-                    el.style.height = "15px";
-                    el.style.background = "#ffc107";
-                    el.style.border = "2px solid white";
-                    el.style.borderRadius = "50%";
-                    return el;
-                })()
+                content: markerContent
             });
         });
 
+        // After Search
         if ( searchParams.lat !== null && searchParams.lon !== null ) {
             const center = {
                 lat: searchParams.lat,
@@ -173,18 +169,13 @@
 
             map.fitBounds(circle.getBounds());
 
+            const markerContent = document.createElement("div");
+            markerContent.className = "marker-search";
+
             new google.maps.marker.AdvancedMarkerElement({
                 map: map,
                 position: center,
-                content: (() => {
-                    const el = document.createElement("div");
-                    el.style.width = "15px";
-                    el.style.height = "15px";
-                    el.style.background = "#0d6efd";
-                    el.style.border = "2px solid white";
-                    el.style.borderRadius = "50%";
-                    return el;
-                })()
+                content: markerContent
             });
         }
     }
