@@ -12,10 +12,6 @@ class Router {
         $this->routes['POST'][$path] = $handler;
     }
 
-    public function delete(string $path, callable $handler) {
-        $this->routes['DELETE'][$path] = $handler;
-    }
-
     public function dispatch(string $uri, string $method) {
         //var_dump($method, $uri);
         $uri = trim($uri, '/');

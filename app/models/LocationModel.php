@@ -5,7 +5,7 @@ class LocationModel {
     private string $backendUrl;
 
     public function __construct( string $backendUrl ) {
-        $this->backendUrl = $backendUrl;
+        $this->backendUrl = $backendUrl . "/locations";
     }
 
     private function fetch( string $url ): array {

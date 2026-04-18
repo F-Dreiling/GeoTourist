@@ -1,5 +1,23 @@
 <?php require __DIR__ . '/layout/header.php'; ?>
 
+<?php if (!isset($_SESSION['user_id'])): ?>
+    <div id="login-overlay">
+        <form method="POST" action="/login" class="login-box">
+            <h4>Login</h4>
+
+            <input type="text" name="username" placeholder="Username" required class="form-control mb-2">
+            <input type="password" name="password" placeholder="Password" required class="form-control mb-2">
+
+            <button class="btn btn-primary w-100">Login</button>
+
+            <?php if (!empty($_SESSION['login_error'])): ?>
+                <div class="text-danger mt-2">Invalid login</div>
+                <?php unset($_SESSION['login_error']); ?>
+            <?php endif; ?>
+        </form>
+    </div>
+<?php endif; ?>
+
 <div id="map-controls">
 
     <form method="GET" action="/near" class="row g-2">

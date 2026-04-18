@@ -95,7 +95,7 @@
 
                         try {
                             const res = await fetch(`/delete/${loc.id}`, {
-                                method: "DELETE"
+                                method: "POST"
                             });
 
                             if (res.ok) {

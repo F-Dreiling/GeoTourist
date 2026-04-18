@@ -134,6 +134,27 @@ footer {
     transform: scale(1.2);
 }
 
+#login-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(6px);
+    z-index: 2000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-box {
+    width: 300px;
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(33, 37, 41, 0.95);
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
 .gm-style .gm-style-iw-c {
     background: transparent !important;
     box-shadow: none !important;
