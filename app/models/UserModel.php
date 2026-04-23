@@ -2,23 +2,27 @@
 
 class UserModel {
 
-    private string $backendUrl;
+    public function __construct() {
+    }
 
-    public function __construct( string $backendUrl ) {
-        $this->backendUrl = $backendUrl . "/auth";
+    private function apiHeaders(): array {
+        return [
+            "Content-Type: application/json",
+            "X-API-KEY: " . BACKEND_KEY
+        ];
     }
 
     public function login( array $data ): array {
         $options = [
             'http' => [
-                'header'  => "Content-type: application/json\r\n",
+                'header' => $this->apiHeaders(),
                 'method'  => 'POST',
                 'content' => json_encode( $data ),
             ],
         ];
 
         $context = stream_context_create( $options );
-        $result = file_get_contents( $this->backendUrl . '/login', false, $context );
+        $result = file_get_contents( AUTH_URL . '/login', false, $context );
 
         if ( $result === false ) return [];
 

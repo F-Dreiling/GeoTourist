@@ -4,18 +4,15 @@ require_once __DIR__ . '/../models/LocationModel.php';
 
 class MapController {
 
-    private $config;
-    private $model;
+    private LocationModel $model;
 
-    public function __construct( $config ) {
-        $this->config = $config;
-        $this->model = new LocationModel( $this->config['backend_url'] );
+    public function __construct() {
+        $this->model = new LocationModel();
     }
 
     private function render( array $locations ) {
         $viewData = [
-            'locations' => $locations,
-            'maps_api_key' => $this->config['maps_api_key']
+            'locations' => $locations
         ];
 
         require __DIR__ . '/../views/map.php';
@@ -101,7 +98,7 @@ class MapController {
 
         $this->model->create( $data );
 
-        $_GET['name'] = $_POST['name'];
+        $_GET['term'] = $_POST['name'];
         $this->search();
     }
 

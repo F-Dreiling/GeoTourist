@@ -2,14 +2,27 @@
 
 class LocationModel {
 
-    private string $backendUrl;
-
-    public function __construct( string $backendUrl ) {
-        $this->backendUrl = $backendUrl . "/locations";
+    public function __construct() {
     }
 
-    private function fetch( string $url ): array {
-        $json = @file_get_contents( $url );
+    private function apiHeaders(): array {
+        return [
+            "Content-Type: application/json",
+            "X-API-KEY: " . BACKEND_KEY
+        ];
+    }
+
+    private function fetch(string $url): array {
+        $options = [
+            'http' => [
+                'header' => $this->apiHeaders(),
+                'method' => 'GET'
+            ]
+        ];
+
+        $context = stream_context_create($options);
+
+        $json = @file_get_contents( $url, false, $context );
 
         if ( $json === false ) return [];
 
@@ -19,29 +32,29 @@ class LocationModel {
     }
 
     public function all(): array {
-        return $this->fetch( $this->backendUrl );
+        return $this->fetch( LOCATIONS_URL );
     }
 
     public function one( string $id ): array {
-        return $this->fetch( $this->backendUrl . "/" . $id );
+        return $this->fetch( LOCATIONS_URL . "/" . $id );
     }
 
     public function search( string $term ): array {
-        return $this->fetch( $this->backendUrl . "/search?term=" . urlencode( $term ) );
+        return $this->fetch( LOCATIONS_URL . "/search?term=" . urlencode( $term ) );
     }
 
     public function date( string $year ): array {
-        return $this->fetch( $this->backendUrl . "/date?year=" . urlencode( $year ) );
+        return $this->fetch( LOCATIONS_URL . "/date?year=" . urlencode( $year ) );
     }
 
     public function near( float $lon, float $lat, float $km = 5 ): array {
-        return $this->fetch( $this->backendUrl . "/near?lon=$lon&lat=$lat&km=$km" );
+        return $this->fetch( LOCATIONS_URL . "/near?lon=$lon&lat=$lat&km=$km" );
     }
 
     public function create( array $data ): array {
         $options = [
             'http' => [
-                'header'  => "Content-type: application/json\r\n",
+                'header'  => $this->apiHeaders(),
                 'method'  => 'POST',
                 'content' => json_encode( $data ),
             ],
@@ -49,7 +62,7 @@ class LocationModel {
 
         $context = stream_context_create( $options );
 
-        $result = file_get_contents( $this->backendUrl, false, $context );
+        $result = file_get_contents( LOCATIONS_URL, false, $context );
 
         if ( $result === false ) return [];
 
@@ -59,13 +72,14 @@ class LocationModel {
     public function delete( string $id ): bool {
         $options = [
             'http' => [
+                'header'=> $this->apiHeaders(),
                 'method' => 'DELETE'
             ]
         ];
 
         $context = stream_context_create( $options );
 
-        $result = file_get_contents( $this->backendUrl . '/' . $id, false, $context );
+        $result = file_get_contents( LOCATIONS_URL . '/' . $id, false, $context );
 
         return $result !== false;
     }

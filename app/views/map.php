@@ -1,6 +1,6 @@
 <?php require __DIR__ . '/layout/header.php'; ?>
 
-<?php if (!isset($_SESSION['user_id'])): ?>
+<?php if ( !isset($_SESSION['user_id']) ): ?>
     <div id="login-overlay">
         <form method="POST" action="/login" class="login-box">
             <h4>Login</h4>
@@ -10,10 +10,12 @@
 
             <button class="btn btn-primary w-100">Login</button>
 
-            <?php if (!empty($_SESSION['login_error'])): ?>
+            <?php if ( !empty($_SESSION['login_error']) ): ?>
                 <div class="text-danger mt-2">Invalid login</div>
-                <?php unset($_SESSION['login_error']); ?>
+                <?php unset( $_SESSION['login_error'] ); ?>
             <?php endif; ?>
+
+            <?= csrf_field() ?>
         </form>
     </div>
 <?php endif; ?>
@@ -97,6 +99,8 @@
             <input type="date" name="date" class="form-control mb-2">
 
             <button class="btn btn-danger w-100">Save Location</button>
+
+            <?= csrf_field() ?>
         </form>
     </div>
 
@@ -119,7 +123,7 @@
 <script src="/js/map.js"></script>
 
 <script async
-    src="https://maps.googleapis.com/maps/api/js?key=<?php echo $viewData['maps_api_key']; ?>&callback=initMap&libraries=marker&loading=async">
+    src="https://maps.googleapis.com/maps/api/js?key=<?php echo MAPS_KEY; ?>&callback=initMap&libraries=marker&loading=async">
 </script>
 
 <?php require __DIR__ . '/layout/footer.php'; ?>

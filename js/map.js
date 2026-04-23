@@ -7,6 +7,7 @@
     const searchPanel = document.getElementById("search-panel");
     const datePanel = document.getElementById("date-panel");
     const newPanel = document.getElementById("new-panel");
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
     btnSearch.addEventListener( "click", () => {
         searchPanel.style.top = btnSearch.offsetTop + "px";
@@ -95,7 +96,13 @@
 
                         try {
                             const res = await fetch(`/delete/${loc.id}`, {
-                                method: "POST"
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    csrf_token: csrfToken
+                                })
                             });
 
                             if (res.ok) {

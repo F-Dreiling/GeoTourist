@@ -6,9 +6,8 @@ class AuthController {
 
     private UserModel $model;
 
-    public function __construct( array $config ) {
-        $this->model = new UserModel( $config['backend_url'] );
-        session_start();
+    public function __construct() {
+        $this->model = new UserModel();
     }
 
     public function login() {
