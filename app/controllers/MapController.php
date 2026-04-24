@@ -10,6 +10,14 @@ class MapController {
         $this->model = new LocationModel();
     }
 
+    private function getLocationsIfAuthenticated( callable $callback ): array {
+        if ( !isset( $_SESSION['user_id'] ) ) {
+            return [];
+        }
+
+        return $callback();
+    }
+
     private function render( array $locations ) {
         $viewData = [
             'locations' => $locations
@@ -19,7 +27,9 @@ class MapController {
     }
 
     public function all() {
-        $locations = $this->model->all();
+        $locations = $this->getLocationsIfAuthenticated( fn() => 
+            $this->model->all() 
+        );
 
         $this->render( $locations );
     }

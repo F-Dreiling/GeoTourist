@@ -3,7 +3,7 @@
 <?php if ( !isset($_SESSION['user_id']) ): ?>
     <div id="login-overlay">
         <form method="POST" action="/login" class="login-box">
-            <h4>Login</h4>
+            <h4 class="text-center">GeoTourist</h4>
 
             <input type="text" name="username" placeholder="Username" required class="form-control mb-2">
             <input type="password" name="password" placeholder="Password" required class="form-control mb-2">
@@ -54,9 +54,12 @@
         <button type="button" id="btn-date" class="btn btn-success mb-2 w-100">
             <i class="fa fa-calendar"></i>
         </button>
-        <button type="button" id="btn-new" class="btn btn-danger w-100">
+        <button type="button" id="btn-new" class="btn btn-danger mb-2 w-100">
             <i class="fa fa-plus"></i>
         </button>
+        <a href="/logout" class="btn btn-dark w-100 text-decoration-none">
+            <i class="fa fa-arrow-right-from-bracket"></i>
+        </a>
     </div>
 
     <div id="search-panel" class="map-panel">

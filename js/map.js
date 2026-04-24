@@ -38,7 +38,7 @@
             mapTypeId: 'hybrid',
             mapId: '458f84a5d3127d64d19da50c',
             tilt: 45,
-            zoom: 10,
+            zoom: 5,
             clickableIcons: false
         });
 
