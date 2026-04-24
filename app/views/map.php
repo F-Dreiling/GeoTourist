@@ -3,7 +3,9 @@
 <?php if ( !Security::check() ): ?>
     <div id="login-overlay">
         <form method="POST" action="/login" class="login-box">
-            <h4 class="text-center">GeoTourist</h4>
+            <h4 class="text-center">
+                <i class="fa-solid fa-globe me-2"></i>GeoTourist
+            </h4>
 
             <input type="text" name="username" placeholder="Username" required class="form-control mb-2">
             <input type="password" name="password" placeholder="Password" required class="form-control mb-2">
