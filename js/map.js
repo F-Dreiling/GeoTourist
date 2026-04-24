@@ -146,7 +146,7 @@
 
             if ( count === 1 ) {
                 map.setCenter(bounds.getCenter());
-                map.setZoom(Math.min(map.getZoom(), 14));
+                map.setZoom(8);
             } 
             else if ( count > 1 ) {
                 map.fitBounds(bounds);
