@@ -35,11 +35,6 @@ class AuthController {
         header( "Location: /" );
         exit;
     }
-
-    public function check(): bool {
-        session_start();
-        return isset( $_SESSION['user_id'] );
-    }
 }
 
 ?>

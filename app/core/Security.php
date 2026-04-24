@@ -6,13 +6,16 @@ class Security {
             return $_POST['csrf_token'];
         }
 
+        static $cached = null;
+        if ( $cached !== null ) return $cached;
+
         $raw = file_get_contents( 'php://input' );
         if ( !$raw ) return null;
 
         $data = json_decode( $raw, true );
         if ( !is_array($data) ) return null;
 
-        return $data['csrf_token'] ?? null;
+        return $cached = $data['csrf_token'] ?? null;
     }
 
     public static function requireAuth() {
@@ -30,6 +33,10 @@ class Security {
             http_response_code(403);
             exit( 'Invalid CSRF token' );
         }
+    }
+
+    public static function check(): bool {
+        return isset( $_SESSION['user_id'] );
     }
 
 }

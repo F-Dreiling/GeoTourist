@@ -1,6 +1,6 @@
 <?php require __DIR__ . '/layout/header.php'; ?>
 
-<?php if ( !isset($_SESSION['user_id']) ): ?>
+<?php if ( !Security::check() ): ?>
     <div id="login-overlay">
         <form method="POST" action="/login" class="login-box">
             <h4 class="text-center">GeoTourist</h4>
