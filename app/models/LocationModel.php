@@ -5,17 +5,10 @@ class LocationModel {
     public function __construct() {
     }
 
-    private function apiHeaders(): array {
-        return [
-            "Content-Type: application/json",
-            "X-API-KEY: " . BACKEND_KEY
-        ];
-    }
-
     private function fetch(string $url): array {
         $options = [
             'http' => [
-                'header' => $this->apiHeaders(),
+                'header' => Security::apiHeaders(),
                 'method' => 'GET'
             ]
         ];
@@ -54,7 +47,7 @@ class LocationModel {
     public function create( array $data ): array {
         $options = [
             'http' => [
-                'header'  => $this->apiHeaders(),
+                'header'  => Security::apiHeaders(),
                 'method'  => 'POST',
                 'content' => json_encode( $data ),
             ],
@@ -72,7 +65,7 @@ class LocationModel {
     public function delete( string $id ): bool {
         $options = [
             'http' => [
-                'header'=> $this->apiHeaders(),
+                'header'=> Security::apiHeaders(),
                 'method' => 'DELETE'
             ]
         ];

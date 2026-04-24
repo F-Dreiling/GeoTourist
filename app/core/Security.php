@@ -2,7 +2,7 @@
 
 class Security {
     public static function getCsrfToken() {
-        if ( isset($_POST['csrf_token']) ) {
+        if ( isset( $_POST['csrf_token'] ) ) {
             return $_POST['csrf_token'];
         }
 
@@ -39,5 +39,12 @@ class Security {
         return isset( $_SESSION['user_id'] );
     }
 
+    public static function apiHeaders(): array {
+        return [
+            "Content-Type: application/json",
+            "X-API-KEY: " . BACKEND_KEY ,
+            "X-USER-ID: " . ( $_SESSION['user_id'] ?? '' )
+        ];
+    }
 }
 ?>
