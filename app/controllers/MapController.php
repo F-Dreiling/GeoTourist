@@ -37,11 +37,6 @@ class MapController {
     public function one() {
         $id = $_GET['id'] ?? null;
 
-        if ( $id === null ) {
-            $this->all();
-            return;
-        }
-
         $locations = $this->model->one( $id );
 
         $this->render( $locations );
