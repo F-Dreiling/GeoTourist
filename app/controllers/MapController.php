@@ -103,8 +103,8 @@ class MapController {
 
         $id = $locations[0]['id'] ?? null;
 
-        if ($id && !empty($_FILES['image']) && !empty($_FILES['image']['tmp_name'])) {
-            $this->model->uploadImage($id, $_FILES['image']);
+        if ( $id && !empty($_FILES['image']) && !empty($_FILES['image']['tmp_name']) ) {
+            $this->model->uploadImage( $id, $_FILES['image'] );
 
             $locations = $this->model->one($id);
         }
