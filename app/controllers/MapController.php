@@ -35,9 +35,9 @@ class MapController {
     public function one() {
         $id = $_GET['id'] ?? null;
 
-        $location = $this->model->one( $id );
+        $locations = $this->model->one( $id );
 
-        $this->render( $location );
+        $this->render( $locations );
     }
 
     public function search() {
@@ -99,13 +99,17 @@ class MapController {
             'dateVisited' => $_POST['date']
         ];
 
-        $location = $this->model->create( $data );
+        $locations = $this->model->create( $data );
 
-        if ( !empty($_FILES['image']) && $_FILES['image']['tmp_name'] ) {
-            $this->model->uploadImage( $location['id'], $_FILES['image'] );
+        $id = $locations[0]['id'] ?? null;
+
+        if ($id && !empty($_FILES['image']) && !empty($_FILES['image']['tmp_name'])) {
+            $this->model->uploadImage($id, $_FILES['image']);
+
+            $locations = $this->model->one($id);
         }
 
-        $this->render( $location );
+        $this->render( $locations );
     }
 
     public function delete() {
