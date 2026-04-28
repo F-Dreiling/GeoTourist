@@ -76,6 +76,26 @@ class LocationModel {
 
         return $result !== false;
     }
+
+    public function uploadImage( string $id, array $file ): bool {
+        $ch = curl_init();
+
+        $headers = Security::apiHeadersFile();
+
+        curl_setopt_array($ch, [
+            CURLOPT_URL => LOCATIONS_URL . "/$id/image",
+            CURLOPT_POST => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_POSTFIELDS => [
+                'file' => new CURLFile( $file['tmp_name'], $file['type'], $file['name'] )
+            ]
+        ]);
+
+        $result = curl_exec($ch);
+
+        return $result !== false;
+    }
 }
 
 ?>

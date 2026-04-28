@@ -20,12 +20,17 @@ require_once __DIR__ . '/app/core/Security.php';
 require_once __DIR__ . '/app/core/Router.php';
 require_once __DIR__ . '/app/controllers/AuthController.php';
 require_once __DIR__ . '/app/controllers/MapController.php';
+require_once __DIR__ . '/app/controllers/ImageController.php';
 
 $router = new Router();
 $authController = new AuthController();
 $mapController = new MapController();
+$imageController = new ImageController();
 
 $router->get( 'logout', fn() => $authController->logout() );
+
+$router->get( 'thumbs', fn() => $imageController->thumb() );
+$router->get( 'images', fn() => $imageController->serve() );
 
 $router->get( 'search', fn() => $mapController->search() );
 $router->addMiddleware( 'GET', 'search', [

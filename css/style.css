@@ -191,3 +191,13 @@ footer {
 .gm-ui-hover-effect:focus {
     outline: none !important;
 }
+
+.gm-style .info-image {
+    max-width: 200px;
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    margin-top: 6px;
+    cursor: pointer;
+}

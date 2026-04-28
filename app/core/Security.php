@@ -46,5 +46,19 @@ class Security {
             "X-USER-ID: " . ( $_SESSION['user_id'] ?? '' )
         ];
     }
+
+    public static function apiHeadersFile(): array {
+        return [
+            "X-API-KEY: " . BACKEND_KEY ,
+            "X-USER-ID: " . ( $_SESSION['user_id'] ?? '' )
+        ];
+    }
+
+    public static function apiHeadersJson() {
+        return json_encode( [
+            "X-API-KEY" => BACKEND_KEY ,
+            "X-USER-ID" => $_SESSION['user_id'] ?? ''
+        ] );
+    }
 }
 ?>

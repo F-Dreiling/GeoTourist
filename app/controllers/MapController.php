@@ -18,10 +18,8 @@ class MapController {
         return $callback();
     }
 
-    private function render( array $locations ) {
-        $viewData = [
-            'locations' => $locations
-        ];
+    private function render( array $locs ) {
+        $locations = $locs;
 
         require __DIR__ . '/../views/map.php';
     }
@@ -37,9 +35,9 @@ class MapController {
     public function one() {
         $id = $_GET['id'] ?? null;
 
-        $locations = $this->model->one( $id );
+        $location = $this->model->one( $id );
 
-        $this->render( $locations );
+        $this->render( $location );
     }
 
     public function search() {
@@ -101,10 +99,13 @@ class MapController {
             'dateVisited' => $_POST['date']
         ];
 
-        $this->model->create( $data );
+        $location = $this->model->create( $data );
 
-        $_GET['term'] = $_POST['name'];
-        $this->search();
+        if ( !empty($_FILES['image']) && $_FILES['image']['tmp_name'] ) {
+            $this->model->uploadImage( $location['id'], $_FILES['image'] );
+        }
+
+        $this->render( $location );
     }
 
     public function delete() {

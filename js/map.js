@@ -69,7 +69,17 @@
                 </div>
                 ${loc.address ? `<div>${loc.address}</div>` : ''}
                 ${loc.dateVisited ? `<div>${loc.dateVisited}</div>` : ''}
+                ${loc.imageUrl ? `<img class="info-image" src="/thumbs?file=${encodeURIComponent(loc.imageUrl)}" data-full="${encodeURIComponent(loc.imageUrl)}" />` : ''}
             `;
+
+            infoContent.addEventListener("click", (e) => {
+                const img = e.target.closest(".info-image");
+                if (!img) return;
+
+                const fullUrl = "/images?file=" + img.dataset.full;
+
+                window.open( fullUrl, "_blank" );
+            });
 
             const info = new google.maps.InfoWindow({
                 shouldFocus: false,

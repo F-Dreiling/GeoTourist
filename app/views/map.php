@@ -88,7 +88,7 @@
     </div>
 
     <div id="new-panel" class="map-panel">
-        <form method="POST" action="/create">
+        <form method="POST" action="/create" enctype="multipart/form-data">
             <input type="text" name="name" class="form-control mb-2" placeholder="Name" required>
             <input type="text" name="address" class="form-control mb-2" placeholder="Address">
 
@@ -102,6 +102,7 @@
             </div>
 
             <input type="date" name="date" class="form-control mb-2">
+            <input type="file" name="image" class="form-control mb-2" accept="image/*">
 
             <button class="btn btn-danger w-100">Save Location</button>
 
@@ -115,13 +116,14 @@
 
 <script>
     window.APP_DATA = {
-        locations: <?php echo json_encode( $viewData['locations'] ); ?>,
+        locations: <?php echo json_encode( $locations ); ?>,
         search: {
             lat: <?= isset( $_GET['lat'] ) ? (float)$_GET['lat'] : 'null' ?>,
             lon: <?= isset( $_GET['lon'] ) ? (float)$_GET['lon'] : 'null' ?>,
             km: <?= isset( $_GET['km'] ) ? (float)$_GET['km'] : 'null' ?>,
             year: <?= isset( $_GET['year'] ) ? (int)$_GET['year'] : 'null' ?>
-        }
+        },
+        headers: <?= Security::apiHeadersJson() ?>
     };
 </script>
 
