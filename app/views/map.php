@@ -116,7 +116,7 @@
 
 <script>
     window.APP_DATA = {
-        locations: <?php echo json_encode( $locations ); ?>,
+        locations: <?php echo json_encode( $locations ?? [] ); ?>,
         search: {
             lat: <?= isset( $_GET['lat'] ) ? (float)$_GET['lat'] : 'null' ?>,
             lon: <?= isset( $_GET['lon'] ) ? (float)$_GET['lon'] : 'null' ?>,
