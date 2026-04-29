@@ -1,5 +1,7 @@
     const locations = window.APP_DATA.locations;
     const searchParams = window.APP_DATA.search;
+    const uploadStatus = window.APP_DATA.uploadStatus;
+    const uploadMessage = window.APP_DATA.uploadMessage;
 
     const btnSearch = document.getElementById("btn-search");
     const btnDate = document.getElementById("btn-date");
@@ -8,6 +10,33 @@
     const datePanel = document.getElementById("date-panel");
     const newPanel = document.getElementById("new-panel");
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+    const showToast = ( message, type = "info" ) => {
+        const colors = {
+            success: "#28a745",
+            error: "#dc3545",
+            info: "#0d6efd"
+        };
+
+        Toastify({
+            text: message,
+            duration: 3500,
+            gravity: "top",
+            position: "center",
+            offset: { y: 100 },
+            style: {
+                background: colors[type]
+            }
+        }).showToast();
+    };
+
+    if ( uploadStatus === "success" ) {
+        showToast( uploadMessage, "success" );
+    }
+
+    if ( uploadStatus === "error" ) {
+        showToast( uploadMessage, "error" );
+    }
 
     btnSearch.addEventListener( "click", () => {
         searchPanel.style.top = btnSearch.offsetTop + "px";

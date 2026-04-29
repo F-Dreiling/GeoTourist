@@ -5,9 +5,16 @@ require_once __DIR__ . '/../models/LocationModel.php';
 class MapController {
 
     private LocationModel $model;
+    private array $viewData;
 
     public function __construct() {
         $this->model = new LocationModel();
+
+        $this->viewData = [
+            'locations' => [],
+            'uploadStatus' => null,
+            'uploadMessage' => null
+        ];
     }
 
     private function getLocationsIfAuthenticated( callable $callback ): array {
@@ -18,8 +25,8 @@ class MapController {
         return $callback();
     }
 
-    private function render( array $locs ) {
-        $locations = $locs;
+    private function render( array $locations ) {
+        $this->viewData['locations'] = $locations;
 
         require __DIR__ . '/../views/map.php';
     }
@@ -103,10 +110,13 @@ class MapController {
 
         $id = $locations[0]['id'] ?? null;
 
-        if ( $id && !empty($_FILES['image']) && !empty($_FILES['image']['tmp_name']) ) {
-            $this->model->uploadImage( $id, $_FILES['image'] );
+        if ( $id && !empty( $_FILES['image'] ) && !empty( $_FILES['image']['tmp_name'] ) ) {
+            $uploadResult = $this->model->uploadImage( $id, $_FILES['image'] );
 
-            $locations = $this->model->one($id);
+            $this->viewData['uploadStatus'] = $uploadResult['status'] ?? null;
+            $this->viewData['uploadMessage'] = $uploadResult['message'] ?? null;
+
+            $locations = $this->model->one( $id );
         }
 
         $this->render( $locations );

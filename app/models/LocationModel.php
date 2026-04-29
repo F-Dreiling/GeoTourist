@@ -77,7 +77,7 @@ class LocationModel {
         return $result !== false;
     }
 
-    public function uploadImage( string $id, array $file ): bool {
+    public function uploadImage( string $id, array $file ): array {
         $ch = curl_init();
 
         $headers = Security::apiHeadersFile();
@@ -94,7 +94,19 @@ class LocationModel {
 
         $result = curl_exec($ch);
 
-        return $result !== false;
+        if ( $result === false ) {
+            return [
+                'status' => 'error',
+                'message' => 'Upload request failed'
+            ];
+        }
+
+        $data = json_decode( $result, true );
+
+        return is_array( $data ) ? $data : [
+            'status' => 'error',
+            'message' => 'Invalid backend response'
+        ];
     }
 }
 
