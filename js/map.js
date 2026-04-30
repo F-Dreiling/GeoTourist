@@ -6,10 +6,17 @@
     const btnSearch = document.getElementById("btn-search");
     const btnDate = document.getElementById("btn-date");
     const btnNew = document.getElementById("btn-new");
+    const btnHome = document.getElementById("btn-home");
+    const btnLogout = document.getElementById("btn-logout");
     const searchPanel = document.getElementById("search-panel");
     const datePanel = document.getElementById("date-panel");
     const newPanel = document.getElementById("new-panel");
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    const fileInput = document.querySelector('input[name="image"]');
+    const preview = document.getElementById("image-preview");
+
+    const MAX_SIZE = 2 * 1024 * 1024;
+    const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 
     const showToast = ( message, type = "info" ) => {
         const colors = {
@@ -39,24 +46,54 @@
     }
 
     btnSearch.addEventListener( "click", () => {
-        searchPanel.style.top = btnSearch.offsetTop + "px";
+        searchPanel.style.top = btnHome.offsetTop + "px";
         searchPanel.classList.toggle("active");
         newPanel.classList.remove("active");
         datePanel.classList.remove("active");
     });
 
     btnDate.addEventListener( "click", () => {
-        datePanel.style.top = btnDate.offsetTop + "px";
+        datePanel.style.top = btnHome.offsetTop + "px";
         datePanel.classList.toggle("active");
         searchPanel.classList.remove("active");
         newPanel.classList.remove("active");
     });
 
     btnNew.addEventListener( "click", () => {
-        newPanel.style.top = btnNew.offsetTop + "px";
+        newPanel.style.top = btnHome.offsetTop + "px";
         newPanel.classList.toggle("active");
         searchPanel.classList.remove("active");
         datePanel.classList.remove("active");
+    });
+
+    fileInput.addEventListener( "change", () => {
+        const file = fileInput.files[0];
+
+        if ( !file ) {
+            preview.style.display = "none";
+            return;
+        }
+
+        if ( file.size > MAX_SIZE ) {
+            showToast( "Image too large (max 2MB)", "error" );
+            fileInput.value = "";
+            preview.style.display = "none";
+            return;
+        }
+
+        if ( !ALLOWED_TYPES.includes( file.type ) ) {
+            showToast( "Unsupported format (jpg, png, gif, webp)", "error" );
+            fileInput.value = "";
+            preview.style.display = "none";
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            preview.src = e.target.result;
+            preview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
     });
 
     window.initMap = function () {

@@ -47,7 +47,7 @@
 <div id="map-ui">
 
     <div id="map-buttons">
-        <a href="/" class="btn btn-dark mb-2 w-100 text-decoration-none">
+        <a href="/" id="btn-home" class="btn btn-dark mb-2 w-100 text-decoration-none">
             <i class="fa fa-home"></i>
         </a>
         <button type="button" id="btn-search" class="btn btn-primary mb-2 w-100">
@@ -59,12 +59,13 @@
         <button type="button" id="btn-new" class="btn btn-danger mb-2 w-100">
             <i class="fa fa-plus"></i>
         </button>
-        <a href="/logout" class="btn btn-dark w-100 text-decoration-none">
+        <a href="/logout" id="btn-logout" class="btn btn-dark w-100 text-decoration-none">
             <i class="fa fa-arrow-right-from-bracket"></i>
         </a>
     </div>
 
     <div id="search-panel" class="map-panel">
+        <h5 class="text-center">Find by Text</h5>
         <form method="GET" action="/search">
             <input type="text" name="term" class="form-control mb-2" placeholder="Search location..." value="<?= htmlspecialchars( $_GET['term'] ?? '' ) ?>">
             <button class="btn btn-primary w-100">Search</button>
@@ -72,6 +73,7 @@
     </div>
 
     <div id="date-panel" class="map-panel">
+        <h5 class="text-center">Filter by Date</h5>
         <form method="GET" action="/date">
             <select name="year" id="year-select" class="form-control mb-2">
                 <option value="">All years</option>
@@ -88,6 +90,7 @@
     </div>
 
     <div id="new-panel" class="map-panel">
+        <h5 class="text-center">Add New Location</h5>
         <form method="POST" action="/create" enctype="multipart/form-data">
             <input type="text" name="name" class="form-control mb-2" placeholder="Name" required>
             <input type="text" name="address" class="form-control mb-2" placeholder="Address">
@@ -103,6 +106,8 @@
 
             <input type="date" name="date" class="form-control mb-2">
             <input type="file" name="image" class="form-control mb-2" accept="image/*">
+
+            <img id="image-preview" class="image-preview" />
 
             <button class="btn btn-danger w-100">Save Location</button>
 
