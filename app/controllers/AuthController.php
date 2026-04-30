@@ -20,19 +20,19 @@ class AuthController {
 
         if ( !empty( $result['success'] ) && $result['success'] === true ) {
             $_SESSION['user_id'] = $result['userId'];
-            header( "Location: /" );
+            header( "Location: " . BASE_PATH . "/" );
             exit;
         }
 
         $_SESSION['login_error'] = true;
-        header( "Location: /" );
+        header( "Location: " . BASE_PATH . "/" );
         exit;
     }
 
     public function logout() {
         session_start();
         session_destroy();
-        header( "Location: /" );
+        header( "Location: " . BASE_PATH . "/" );
         exit;
     }
 }
