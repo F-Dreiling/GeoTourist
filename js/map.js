@@ -172,7 +172,7 @@
                         if (!confirm("Delete this location?")) return;
 
                         try {
-                            const res = await fetch(`/delete/${loc.id}`, {
+                            const res = await fetch(`${BASE_PATH}/delete/${loc.id}`, {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json"
