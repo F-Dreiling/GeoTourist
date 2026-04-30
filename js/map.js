@@ -1,3 +1,4 @@
+    const BASE_PATH = window.APP_DATA.base_path || '';
     const locations = window.APP_DATA.locations;
     const searchParams = window.APP_DATA.search;
     const uploadStatus = window.APP_DATA.uploadStatus;
@@ -135,14 +136,14 @@
                 </div>
                 ${loc.address ? `<div>${loc.address}</div>` : ''}
                 ${loc.dateVisited ? `<div>${loc.dateVisited}</div>` : ''}
-                ${loc.imageUrl ? `<img class="info-image" src="/thumbs?file=${encodeURIComponent(loc.imageUrl)}" data-full="${encodeURIComponent(loc.imageUrl)}" />` : ''}
+                ${loc.imageUrl ? `<img class="info-image" src="${BASE_PATH}/thumbs?file=${encodeURIComponent(loc.imageUrl)}" data-full="${encodeURIComponent(loc.imageUrl)}" />` : ''}
             `;
 
             infoContent.addEventListener("click", (e) => {
                 const img = e.target.closest(".info-image");
                 if (!img) return;
 
-                const fullUrl = "/images?file=" + img.dataset.full;
+                const fullUrl = `${BASE_PATH}/images?file=` + img.dataset.full;
 
                 window.open( fullUrl, "_blank" );
             });

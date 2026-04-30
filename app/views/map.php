@@ -121,6 +121,7 @@
 
 <script>
     window.APP_DATA = {
+        base_path: "<?= BASE_PATH ?>",
         locations: <?php echo json_encode( $this->viewData['locations'] ?? [] ); ?>,
         search: {
             lat: <?= isset( $_GET['lat'] ) ? (float)$_GET['lat'] : 'null' ?>,
@@ -133,7 +134,7 @@
     };
 </script>
 
-<script src="/js/map.js"></script>
+<script src="<?= BASE_PATH ?>/js/map.js"></script>
 
 <script async
     src="https://maps.googleapis.com/maps/api/js?key=<?php echo MAPS_KEY; ?>&callback=initMap&libraries=marker&loading=async">
